@@ -342,6 +342,7 @@
       overflow: hidden;
       border-radius: 6px;
       transition: box-shadow .4s ease;
+      object-fit: cover;
     }
 
     .project-media:hover {
@@ -744,6 +745,167 @@
         padding: 3rem 0;
       }
     }
+
+    /* ================== PROJECT MEDIA IMAGES & MAXIMIZE BUTTON ================== */
+    .project-media .project-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+      filter: grayscale(25%) brightness(90%);
+      z-index: 1;
+    }
+
+    .project-media:hover .project-img {
+      transform: scale(1.04);
+      filter: grayscale(0%) brightness(100%);
+    }
+
+    .maximize-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(24, 3, 7, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .project-media:hover .maximize-overlay {
+      opacity: 1;
+    }
+
+    .search-icon-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(24, 3, 7, 0.6);
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transform: scale(0.85);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s, color 0.3s;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .project-media:hover .search-icon-btn {
+      transform: scale(1);
+    }
+
+    .search-icon-btn:hover {
+      background: var(--accent);
+      color: var(--ink);
+      transform: scale(1.1);
+      box-shadow: 0 0 20px var(--accent);
+    }
+
+    .search-icon-btn svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* ================== LIGHTBOX MODAL ================== */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(16, 1, 8, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .lightbox.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .lightbox-content-wrapper {
+      position: relative;
+      max-width: 85%;
+      max-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(0.9);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .lightbox.show .lightbox-content-wrapper {
+      transform: scale(1);
+    }
+
+    .lightbox-content {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 8px;
+      border: 1.5px solid var(--accent);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(224, 51, 79, 0.15);
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      color: var(--text-soft);
+      font-size: 32px;
+      font-weight: 300;
+      transition: all 0.3s;
+      cursor: pointer;
+      z-index: 2010;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .lightbox-close:hover {
+      color: var(--text);
+      transform: rotate(90deg);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(224, 51, 79, 0.2);
+    }
+
+    .lightbox-caption {
+      margin-top: 24px;
+      text-align: center;
+      color: var(--text);
+      font-family: var(--disp);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+    }
+
+    .lightbox.show .lightbox-caption {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 
@@ -852,6 +1014,16 @@
     <span>GET IN TOUCH</span>
   </a>
 
+  <!-- Lightbox Modal for Maximizing Project Photos/Videos -->
+  <div id="lightbox" class="lightbox">
+    <div class="lightbox-close">&times;</div>
+    <div class="lightbox-content-wrapper">
+      <img class="lightbox-content" id="lightbox-img" src="" alt="Enlarged Project Preview">
+      <video class="lightbox-content" id="lightbox-video" src="" controls loop autoplay muted style="display: none;"></video>
+    </div>
+    <div id="lightbox-caption" class="lightbox-caption"></div>
+  </div>
+
   <script>
     (function () {
 
@@ -867,42 +1039,38 @@
       const data = {
         cad: {
           icon: 'cad', tag: 'STEP / IGES', items: [
-            ['Parametric Drone Chassis', 'Lightweight carbon-composite frame modeled with a fully parametric feature tree so wall thickness and arm span update from three driving dimensions.'],
-            ['Modular Shelving System', 'Flat-pack shelving kit designed around a single repeated joint, cut list generated directly from the assembly for CNC production.'],
-            ['Gearbox Housing Redesign', 'Reworked housing for a 3:1 reduction gearbox, cutting part count from eleven to six while holding shaft alignment tolerances.'],
-            ['Ergonomic Hand Tool Grip', 'Surface-modeled grip shell developed from hand-scan data, iterated through four prototypes for pressure distribution.'],
-            ['Bracket for Solar Mount', 'Load-rated aluminium bracket sized against wind-loading calculations for a rooftop solar array.'],
-            ['Precision Jig for Assembly Line', 'Locating jig built to hold a sheet-metal panel within 0.1mm during a welding operation.']
+            ['Crash Barrier Shuttering Plate Design', 'Designed a 3D crash barrier shuttering plate assembly using AutoCAD 2026 for highway and bridge construction applications. The model features accurately bent steel plates, reinforced stiffeners, and bolted connections to ensure structural stability during concrete casting. The design was optimized for CNC cutting, press brake bending, and welding, making it fabrication-ready.', 'public/Projects/Cad projects/3d design of a crash barrier shuttering plate.png'],
+            ['3D Railing Post Model', 'Designed a fabrication-ready 3D railing post using AutoCAD 2026 for bridge and highway safety barrier systems. The model was developed with precise dimensions, accurately positioned bolt holes, and a U-shaped top profile to ensure structural integrity and ease of installation.', 'public/Projects/Cad projects/3d design of a railing post.png'],
+            ['3D Woofer Box Design', 'Designed a custom 3D woofer box enclosure using AutoCAD 2026, focusing on structural accuracy and efficient acoustic housing. The model features dual speaker compartments, precisely positioned speaker cutouts, and optimized dimensions suitable for MDF fabrication via CNC cutting and assembly.', 'public/Projects/Cad projects/3d design of woofer box.png'],
+            ['Bridge Girder Shuttering Plate', 'Designed a bridge girder shuttering plate in AutoCAD 2026 by developing a detailed engineering profile with precise dimensions and geometric accuracy, supporting reinforced concrete girder construction with proper alignment and fabrication feasibility.', 'public/Projects/Cad projects/Line diagram of a bridge girder shuttering plate.png'],
+            ['Shuttering Plate', 'Prepared a detailed 2D line diagram of a bridge shuttering plate system using AutoCAD 2026, ensuring precise dimensions, spacing, and structural layout for fabrication and on-site assembly.', 'public/Projects/Cad projects/Line diagram of Shuttering plate.png'],
+            ['3D Woofer box Assembly', 'Designed a custom 3D automotive woofer box using SolidWorks, focusing on precise dimensions, structural stability, and seamless fitment within the vehicle. Prepared detailed CAD models and production drawings to support efficient manufacturing and installation..', 'public/Projects/Cad projects/3D woofer box.png']
           ]
         },
         frontend: {
-          icon: 'frontend', tag: 'React / TS', items: [
-            ['Realtime Fleet Dashboard', 'Live map and telemetry dashboard tracking two hundred vehicles at once, built to stay responsive under a steady stream of socket updates.'],
-            ['Design System — Northwind', 'Component library and token set adopted across four product teams, documented with usage rules rather than just props.'],
-            ['Checkout Flow Redesign', 'Reworked checkout that cut form fields by a third and moved validation inline, reducing drop-off at the payment step.'],
-            ['Internal Analytics Console', 'Self-serve reporting tool letting non-engineers build charts from raw event data without writing a query.'],
-            ['Accessible Booking Widget', 'Keyboard- and screen-reader-first scheduling widget embedded across a network of clinic websites.'],
-            ['Offline-First Field App', 'Progressive web app for inspectors working without signal, syncing queued submissions once connectivity returns.']
+          icon: 'frontend', tag: 'HTML/CSS/Javascript', items: [
+            ['Personal Portfolio Website', 'Designed and developed a responsive personal portfolio featuring smooth animations, interactive UI, and modern design principles. Deployed using AWS Amplify with GitHub integration for automatic deployments and version-controlled updates.', 'public/Projects/Frontend/personal-portfolio.png'],
+            ['Steel Fabrication Website - Vijay Industries', 'Designed, developed, and deployed the official SteelFabrication.in website using HTML, CSS, and JavaScript. Created a responsive, business-focused interface to showcase engineering services and products while ensuring smooth performance, modern design, and an enhanced digital presence.', 'public/Projects/Frontend/Vijayindustries.png'],
+            ['Lazarev Website Clone', 'Recreated the Lazarev digital agency website to practice advanced frontend development, implementing smooth scrolling, engaging animations, and a pixel-perfect responsive interface.', 'public/Projects/Frontend/lazarev.mp4'],
+            ['Shah Metal Industries Website', 'Developed a professional business website showcasing the companys products and services with a clean, responsive design. Customized the interface to meet business requirements and improve the companys online presence..', 'public/Projects/Frontend/shah metal.mp4'],
+            ['SRS Shirts Website', 'Built a modern fashion brand website featuring an intuitive user interface, responsive layouts, and visually appealing product showcases to deliver a seamless browsing experience across devices.', 'public/Projects/Frontend/SRS Shirts.mp4'],
+            
+           
           ]
         },
         graphic: {
-          icon: 'graphic', tag: 'Identity', items: [
-            ['Brand Identity — Kiln Coffee', 'Full identity system for a small-batch roastery, built around a mark that doubles as a roast-level indicator.'],
-            ['Editorial Layout — Fieldnotes', 'Grid-driven magazine layout for a quarterly print journal on landscape photography.'],
-            ['Packaging — Loam Skincare', 'Refillable packaging suite designed to read clearly on a crowded shelf at a distance.'],
-            ['Motion Titles — Harbor Docuseries', 'Title sequence and lower-third system for a five-part documentary series.'],
-            ['Poster Series — City Transit', 'Wayfinding-inspired poster set commissioned for a public transit centenary.'],
-            ['Icon Set — Meridian App', 'A 120-icon set drawn on a two-pixel grid to stay crisp at 16px.']
+          icon: 'graphic', tag: 'Design & Motion', items: [
+            ['Vijay Industries Exhibition Banner', 'Designed a high-impact promotional roll-up banner for Vijay Industries showcasing industrial shuttering plates and fabrication products, optimized for large-scale print clarity.', 'public/Projects/Graphics/2.jpg'],
+            ['Product Catalog Roll-up Banner', 'Creative marketing banner highlighting various machinery components and safety railings, utilizing clean typography and strong visual hierarchy.', 'public/Projects/Graphics/4.jpg'],
+            ['Corporate Event Backdrop Design', 'Professional large-format backdrop design representing corporate capabilities, engineering excellence, and brand identity systems.', 'public/Projects/Graphics/7.png'],
+            ['Creative Reel', 'Motion design video showing the detailed CAD assembly and internal gear mechanism of a custom mechanical music box.', 'public/Projects/Graphics/creativereel.mp4'],
+            ['Music Box commercial editing', 'Video presentation highlighting the assembly stages, internal components, and ergonomic design of an automotive armrest project.', 'public/Projects/Graphics/Music box.mp4'],
+            ['Driveon Music Tray ', '3D visualization walkthrough of a product showroom layout, detailing spatial alignment and architectural design for physical client displays.', 'public/Projects/Graphics/cheap vs premium tray.mp4']
           ]
         },
         cloud: {
-          icon: 'cloud', tag: 'AWS / Terraform', items: [
-            ['Multi-Region Deploy Pipeline', 'Zero-downtime deployment pipeline spanning three regions with automated rollback on health-check failure.'],
-            ['Cost-Aware Autoscaling', 'Autoscaling policy tied to request cost rather than raw CPU, cutting idle compute spend by a third.'],
-            ['Event-Driven Data Platform', 'Ingestion pipeline moving five million events a day through a queue into a queryable warehouse.'],
-            ['Infrastructure-as-Code Migration', 'Migrated a hand-built AWS environment into version-controlled Terraform without a maintenance window.'],
-            ['Disaster Recovery Runbook', 'Automated failover system tested quarterly with a scripted game-day exercise.'],
-            ['Internal Developer Platform', 'Self-service portal letting engineers spin up a compliant environment in minutes instead of days.']
+          icon: 'cloud', tag: 'AWS', items: [
+            ['Personal Portfolio Website', 'Designed and developed a responsive personal portfolio featuring smooth animations, interactive UI, and modern design principles. Deployed using AWS Amplify with GitHub integration for automatic deployments and version-controlled updates.', 'public/Projects/Frontend/personal-portfolio.png'],
           ]
         }
       };
@@ -912,13 +1080,29 @@
         const { icon, tag, items } = data[key];
         const list = document.querySelector('#' + key + ' [data-list]');
         items.forEach((item, i) => {
-          const [title, desc] = item;
+          const [title, desc, imgUrl] = item;
           const num = String(i + 1).padStart(2, '0');
           const card = document.createElement('div');
           card.className = 'project-card';
+          
+          const isVideo = imgUrl.toLowerCase().endsWith('.mp4');
+          const mediaHtml = isVideo 
+            ? `<video src="${imgUrl}" class="project-img" loop muted playsinline ></video>`
+            : `<img src="${imgUrl}" alt="${title}" class="project-img" loading="lazy">`;
+
           card.innerHTML = `
         <div class="project-media">
-          <div class="icon-wrap">${icons[icon]}</div>
+          ${mediaHtml}
+          <div class="maximize-overlay" title="Maximize View">
+            <div class="search-icon-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="11" y1="8" x2="11" y2="14"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+            </div>
+          </div>
           <span class="corner tl"></span><span class="corner tr"></span>
           <span class="corner bl"></span><span class="corner br"></span>
           <span class="project-tag">${tag}</span>
@@ -931,6 +1115,19 @@
         </div>`;
           list.appendChild(card);
         });
+      });
+
+      /* ---------------- hover video playback ---------------- */
+      document.querySelectorAll('.project-media').forEach(media => {
+        const video = media.querySelector('video.project-img');
+        if (video) {
+          media.addEventListener('mouseenter', () => {
+            video.play().catch(err => console.log('Video autoplay blocked:', err));
+          });
+          media.addEventListener('mouseleave', () => {
+            video.pause();
+          });
+        }
       });
 
       /* ---------------- scroll-triggered reveal (IntersectionObserver) ---------------- */
@@ -1000,6 +1197,85 @@
         btn.addEventListener('mouseleave', () => {
           btn.style.transform = 'none';
         });
+      });
+
+      /* ---------------- lightbox modal functionality ---------------- */
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxVideo = document.getElementById('lightbox-video');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.querySelector('.lightbox-close');
+
+      // Bind click events to each project-media container
+      document.querySelectorAll('.project-media').forEach(media => {
+        media.addEventListener('click', () => {
+          const mediaEl = media.querySelector('.project-img');
+          const titleEl = media.closest('.project-card').querySelector('h3');
+          if (mediaEl && lightbox) {
+            const isVideo = mediaEl.tagName.toLowerCase() === 'video';
+            if (isVideo) {
+              if (lightboxImg) lightboxImg.style.display = 'none';
+              if (lightboxVideo) {
+                lightboxVideo.style.display = 'block';
+                lightboxVideo.src = mediaEl.src;
+                lightboxVideo.play().catch(err => console.log('Video autoplay blocked:', err));
+              }
+            } else {
+              if (lightboxVideo) {
+                lightboxVideo.style.display = 'none';
+                lightboxVideo.pause();
+                lightboxVideo.src = '';
+              }
+              if (lightboxImg) {
+                lightboxImg.style.display = 'block';
+                lightboxImg.src = mediaEl.src;
+              }
+            }
+            if (lightboxCaption && titleEl) {
+              lightboxCaption.textContent = titleEl.textContent;
+            }
+            lightbox.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Disable page scrolling
+          }
+        });
+      });
+
+      // Close functions
+      const closeLightbox = () => {
+        if (lightbox) {
+          lightbox.classList.remove('show');
+          if (lightboxVideo) {
+            lightboxVideo.pause();
+            lightboxVideo.src = '';
+          }
+          // Re-enable scrolling only if intro overlay isn't active
+          if (!intro || intro.classList.contains('hidden')) {
+            document.body.style.overflow = '';
+          }
+        }
+      };
+
+      if (lightboxClose) {
+        lightboxClose.addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeLightbox();
+        });
+      }
+
+      if (lightbox) {
+        lightbox.addEventListener('click', (e) => {
+          // If user clicked backdrop and not the image content itself
+          if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrapper')) {
+            closeLightbox();
+          }
+        });
+      }
+
+      // Close on Escape key press
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeLightbox();
+        }
       });
 
       /* ---------------- intro sequence ---------------- */
