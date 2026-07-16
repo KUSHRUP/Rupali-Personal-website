@@ -37,18 +37,18 @@ const circle = document.querySelector('.cursor-circle');
 
 if (window.matchMedia('(pointer: fine)').matches && cursor) {
     cursor.style.display = 'block';
-    
+
     let mouseX = 0, mouseY = 0;
     let circleX = 0, circleY = 0;
-    
+
     window.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        
+
         // Instant position for inner dot
         gsap.set(dot, { x: mouseX, y: mouseY });
     });
-    
+
     // Inertia / Lag for the outer circle
     gsap.ticker.add(() => {
         const dt = 1.0 - Math.pow(1.0 - 0.16, gsap.ticker.deltaRatio());
@@ -56,7 +56,7 @@ if (window.matchMedia('(pointer: fine)').matches && cursor) {
         circleY += (mouseY - circleY) * dt;
         gsap.set(circle, { x: circleX, y: circleY });
     });
-    
+
     // Expanding states on hovering clickable components
     const hoverables = document.querySelectorAll('a, button, .accordion-header, .submit-btn, .polaroid-card, .magnetic-btn, .project-media img');
     hoverables.forEach(el => {
@@ -76,7 +76,7 @@ window.addEventListener('mousemove', (e) => {
     const { clientX, clientY } = e;
     const xPercent = (clientX / window.innerWidth - 0.5) * 40;
     const yPercent = (clientY / window.innerHeight - 0.5) * 40;
-    
+
     gsap.to('.blob1', { xPercent: xPercent * 0.6, yPercent: yPercent * 0.6, duration: 2, ease: 'power2.out' });
     gsap.to('.blob2', { xPercent: -xPercent * 0.6, yPercent: -yPercent * 0.6, duration: 2, ease: 'power2.out' });
     gsap.to('.blob3', { xPercent: xPercent * 0.3, yPercent: -yPercent * 0.3, duration: 2.5, ease: 'power2.out' });
@@ -141,37 +141,37 @@ function revealHero() {
     const storyTag = document.querySelector('.hero-story-tag');
     const scrollInd = document.querySelector('.scroll-indicator');
     const heroPortrait = document.querySelector('.hero-bg-media');
-    
+
     const heroTl = gsap.timeline();
-    
+
     heroTl.to(heroPortrait, {
         opacity: 1,
         x: 0,
         duration: 1.6,
         ease: 'power3.out'
     });
-    
+
     heroTl.to(storyTag, {
         opacity: 1,
         y: 0,
         duration: 0.8,
         ease: 'power2.out'
     }, '-=1.2');
-    
+
     heroTl.to(titleWords, {
         y: '0%',
         duration: 1.2,
         stagger: 0.12,
         ease: 'power4.out'
     }, '-=1.0');
-    
+
     heroTl.to(subtitle, {
         opacity: 1,
         y: 0,
         duration: 1,
         ease: 'power3.out'
     }, '-=0.8');
-    
+
     heroTl.to(scrollInd, {
         opacity: 1,
         y: 0,
@@ -226,10 +226,9 @@ gsap.from('.about-bio-text p, .about-values .value-item', {
     }
 });
 
-// Polaroids scrolling skew/parallax
-gsap.to('.card-1', {
-    y: -50,
-    rotate: -9,
+// Biography photo scrolling parallax
+gsap.to('.single-photo-wrapper', {
+    y: -40,
     ease: 'none',
     scrollTrigger: {
         trigger: '.about-section',
@@ -239,6 +238,7 @@ gsap.to('.card-1', {
     }
 });
 
+/* .card-2 is commented out in HTML
 gsap.to('.card-2', {
     y: 50,
     rotate: 12,
@@ -250,6 +250,7 @@ gsap.to('.card-2', {
         scrub: true
     }
 });
+*/
 
 /* ===================================================
    SKILLS SECTION Tilt 3D
@@ -260,16 +261,16 @@ skillCards.forEach(card => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        
+
         card.style.setProperty('--mouse-x', `${x}px`);
         card.style.setProperty('--mouse-y', `${y}px`);
-        
+
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        
+
         const rotateX = ((y - centerY) / centerY) * -10;
         const rotateY = ((x - centerX) / centerX) * 10;
-        
+
         gsap.to(card, {
             rotateX: rotateX,
             rotateY: rotateY,
@@ -279,7 +280,7 @@ skillCards.forEach(card => {
             transformPerspective: 800
         });
     });
-    
+
     card.addEventListener('mouseleave', () => {
         gsap.to(card, {
             rotateX: 0,
@@ -312,10 +313,10 @@ const accordionItems = document.querySelectorAll('.accordion-item');
 accordionItems.forEach(item => {
     const header = item.querySelector('.accordion-header');
     const content = item.querySelector('.accordion-content');
-    
+
     header.addEventListener('click', () => {
         const isActive = item.classList.contains('active');
-        
+
         // Close other items
         accordionItems.forEach(innerItem => {
             if (innerItem !== item && innerItem.classList.contains('active')) {
@@ -328,7 +329,7 @@ accordionItems.forEach(item => {
                 });
             }
         });
-        
+
         // Toggle current item
         if (isActive) {
             item.classList.remove('active');
@@ -343,7 +344,7 @@ accordionItems.forEach(item => {
             gsap.set(content, { height: 'auto' });
             const autoHeight = content.clientHeight;
             gsap.set(content, { height: 0, opacity: 0 });
-            
+
             gsap.to(content, {
                 height: autoHeight,
                 opacity: 1,
@@ -359,8 +360,8 @@ accordionItems.forEach(item => {
    =================================================== */
 const timelineLine = document.querySelector('.timeline-line-progress');
 if (timelineLine) {
-    gsap.fromTo(timelineLine, 
-        { attr: { y2: '0%' } }, 
+    gsap.fromTo(timelineLine,
+        { attr: { y2: '0%' } },
         {
             attr: { y2: '100%' },
             ease: 'none',
@@ -409,9 +410,9 @@ const magnetics = document.querySelectorAll('.magnetic-btn');
 magnetics.forEach(btn => {
     btn.addEventListener('mousemove', (e) => {
         const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width/2;
-        const y = e.clientY - rect.top - rect.height/2;
-        
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
         gsap.to(btn, {
             x: x * 0.35,
             y: y * 0.35,
@@ -419,7 +420,7 @@ magnetics.forEach(btn => {
             ease: 'power2.out'
         });
     });
-    
+
     btn.addEventListener('mouseleave', () => {
         gsap.to(btn, {
             x: 0,
@@ -487,62 +488,73 @@ headerNavLinks.forEach(link => {
 });
 
 /* ===================================================
-   KEEP ORIGINAL PROJECTS TIMELINE (PAGE5) EXACTLY AS-IS
+   PAGE 5 - CREATION SPLIT PANEL REVEAL (LANDING PAGE)
    =================================================== */
-const projects = gsap.utils.toArray(".project");
 
-/* Initial states */
-gsap.set(projects, { opacity: 0, y: 80 });
-gsap.set(".hero", { autoAlpha: 0 }); // opacity:0 + visibility:hidden, reinforces the CSS
+// Initial states for Page 5 content and headings
+gsap.set(".page5 .content", { autoAlpha: 0, scale: 0.9, yPercent: 10 });
+gsap.set("#topH", { yPercent: 50 });
+gsap.set("#bottomH", { yPercent: -50 });
 
-// --- page5 panel-opening phase (original knobs, same tween values) ---
-const panelOpenDuration      = 1;   // #top / #bottom / headings / .content sliding, in sync
-const contentHoldDuration    = 1;   // .content stays fully visible after panels finish opening
-const contentFadeOutDuration = 0.6; // .content fades away
-const heroFadeInDuration     = 0.6; // .hero fades in to replace it
-
-// --- hero phase (original knobs) ---
-const handRiseDuration = 1.5;   // how long the hand takes to rise
-const handHoldDuration = 1;     // pause after the hand settles, before slide 1 starts
-const fadeInDuration   = 1;     // each project fading in
-const holdDuration     = 1.3;   // each project staying fully visible
-const fadeOutDuration  = 1;     // each project fading out before the next
-
-const perProjectDuration = fadeInDuration + holdDuration + fadeOutDuration;
-const heroPhaseSeconds = handRiseDuration + handHoldDuration + projects.length * perProjectDuration;
-
-const totalTimelineSeconds =
-    panelOpenDuration +
-    contentHoldDuration +
-    contentFadeOutDuration +
-    heroFadeInDuration +
-    heroPhaseSeconds;
-
-// Pixels of scroll per "second" of timeline
-const pxPerSecond = 550;
-const scrollDistance = Math.round(totalTimelineSeconds * pxPerSecond);
-
-/* ONE master timeline, ONE ScrollTrigger, pinning .page5 for the entire sequence */
-const master = gsap.timeline({
+const page5Tl = gsap.timeline({
     scrollTrigger: {
         trigger: ".page5",
         start: "top top",
-        end: "+=" + scrollDistance,
+        end: "+=1200", // snappy pinning distance
         scrub: 1,
         pin: true,
         anticipatePin: 1
     }
 });
 
-/* 1–4) Open #top / #bottom, move headings, slide .content */
-master.to("#top", { yPercent: -100, ease: 1, duration: panelOpenDuration }, 0)
-    .to("#bottom", { yPercent: 100, ease: 1, duration: panelOpenDuration }, 0)
-    .to("#topH", { yPercent: 30, ease: 1, duration: panelOpenDuration }, 0)
-    .to("#bottomH", { yPercent: -40, ease: 1, duration: panelOpenDuration }, 0)
-    .to(".page5 .content", { yPercent: -40, ease: 1, duration: panelOpenDuration }, 0); // Scoped to .page5 .content
+page5Tl.to("#top", { yPercent: -100, ease: "none", duration: 1 }, 0)
+    .to("#bottom", { yPercent: 100, ease: "none", duration: 1 }, 0)
+    .to("#topH", { yPercent: 100, ease: "none", duration: 1 }, 0)
+    .to("#bottomH", { yPercent: -100, ease: "none", duration: 1 }, 0)
+    .to(".page5 .content", { autoAlpha: 1, scale: 1, yPercent: 0, ease: "power2.out", duration: 1 }, 0.2)
+    // Hold the content visible before scroll unpins
+    .to({}, { duration: 0.5 });
 
-// 5) Content stays put/visible for a short moment once panels are fully open.
-master.to({}, { duration: contentHoldDuration });
 
-// 6) Content fades away.
-master.to(".page5 .content", { autoAlpha: 0, duration: contentFadeOutDuration }); // Scoped
+/* ===================================================
+   RESUME SECTION - GSAP TIMELINE
+   =================================================== */
+
+// Initial state for centered text overlay
+gsap.set(".text", { opacity: 0, y: 100 });
+
+var tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: "#resume",
+        start: "50% 90%",
+        end: "70% 10%",
+        scrub: true,
+        markers: true,
+    }
+})
+
+tl.to("#imgTwo", {
+    rotateX: "0deg",
+    marginTop: "18.3%",
+
+})
+    .to("#imgThree", {
+        rotateX: "0deg",
+        marginTop: "18.3%",
+
+    },'sa')
+    .to(".resume", {
+        scale: "0.5",
+        minHeight: "90vh",
+        y: "25%",
+    }, 'sa')
+    .to(".img", {
+        filter: "grayscale(1)",
+    }, 'saa')
+    .to(".text", {
+        opacity: 1,
+        y: "25%",
+    }, 'saa')
+    .to(".overlay", {
+        opacity: 1,
+    }, 'saa')
