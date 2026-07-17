@@ -636,7 +636,7 @@ body {
 }
 
 .card-1 {
-    width: 320px;
+    width: 500px;
     top: 50px;
     left: 20px;
     transform: rotate(-6deg);
@@ -648,16 +648,16 @@ body {
 /* Biography Single Photo Frame with Silver SVG Grid */
 .single-photo-wrapper {
     position: relative;
-    width: 500px;
-    height: 700px;
-    margin: 50px auto 0;
+    width: 40vw;
+    height: 850px;
+    margin: 10px auto 0;
     z-index: 2;
     transform-origin: center;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform;
     background: transparent;
    
-  filter: drop-shadow(15px 15px 20px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(20px 20px 20px rgba(28, 28, 28, 0.934));
 }
 
 
@@ -688,7 +688,7 @@ body {
     position: absolute;
     top: -40px;
     left: -40px;
-    width: calc(100% + 80px);
+    width: calc(100% + 20px);
     height: calc(100% + 30px);
     z-index: 1;
     pointer-events: none;
@@ -698,7 +698,7 @@ body {
 
 
 .photo-bg-svg img.backdrop-img {
-    width: 100%;
+    width: 80%;
     height: 100%;
     object-fit: contain;
     filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.55));
@@ -1081,97 +1081,6 @@ body {
 }
 
 /* ===================================================
-   TESTIMONIALS SECTION
-   =================================================== */
-.testimonials-section {
-    position: relative;
-    width: 100%;
-    padding: 10rem 0;
-    background-color: var(--bg-sec2);
-    z-index: 10;
-}
-
-.testimonials-container {
-    width: 90%;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.testimonials-headline {
-    font-size: 3.5rem;
-    font-weight: 300;
-    line-height: 1.2;
-    letter-spacing: -1px;
-    margin-bottom: 6rem;
-}
-
-.testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3.5rem;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-.testimonial-card {
-    background-color: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    padding: 3.5rem;
-    border-radius: 12px;
-    position: relative;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px);
-    transition: var(--transition-premium);
-}
-
-.testimonial-card:hover {
-    border-color: rgba(232, 162, 179, 0.15);
-    transform: translateY(-5px);
-}
-
-.quote-icon {
-    font-family: var(--font-heading);
-    font-size: 5rem;
-    line-height: 1;
-    color: var(--color-accent-light);
-    opacity: 0.2;
-    position: absolute;
-    top: 1rem;
-    left: 2rem;
-}
-
-.testimonial-card .quote {
-    font-family: var(--font-body);
-    font-size: 1.15rem;
-    font-weight: 300;
-    line-height: 1.8;
-    color: var(--color-text-muted);
-    margin-bottom: 2.5rem;
-    position: relative;
-    z-index: 2;
-}
-
-.client-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.client-name {
-    font-family: var(--font-heading);
-    font-size: 1.3rem;
-    font-weight: 500;
-    color: var(--color-text-main);
-}
-
-.client-role {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    color: var(--color-accent-light);
-    margin-top: 4px;
-}
-
-/* ===================================================
    CONTACT SECTION
    =================================================== */
 .contact-section {
@@ -1379,175 +1288,6 @@ body {
 /* ===================================================
    RESPONSIVE DESIGN LAYOUT OVERRIDES
    =================================================== */
-@media (max-width: 1200px) {
-    .hero-title {
-        font-size: 6rem;
-    }
-
-    .about-headline {
-        font-size: 3rem;
-    }
-}
-
-@media (max-width: 991px) {
-    .nav-menu {
-        display: none;
-    }
-
-    .menu-toggle {
-        display: flex;
-    }
-
-    .nav-cta {
-        display: none;
-    }
-
-    .hero-title {
-        font-size: 5rem;
-    }
-
-    .hero-bg-media {
-        width: 100%;
-        left: 0;
-        right: 0;
-        top: 0;
-        opacity: 0.15 !important;
-        /* lower opacity background for overlaying text */
-        transform: none !important;
-    }
-
-    .hero-overlay {
-        background: radial-gradient(circle at center, rgba(28, 1, 12, 0.6) 0%, var(--bg-base) 90%);
-    }
-
-    .about-grid,
-    .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 4rem;
-    }
-
-    .photo-composition {
-        height: 500px;
-    }
-
-    .card-1 {
-        width: 280px;
-        left: 10%;
-    }
-
-    .card-2 {
-        width: 240px;
-        right: 10%;
-    }
-
-    .skills-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .timeline-line-container {
-        left: 20px;
-    }
-
-    .timeline-item {
-        width: 100%;
-        text-align: left !important;
-        padding: 2rem 0 2rem 40px;
-    }
-
-    .timeline-dot {
-        left: 12px !important;
-    }
-
-    .timeline-item.right {
-        left: 0;
-    }
-
-    .testimonials-grid {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-    }
-
-    .contact-headline {
-        font-size: 3.5rem;
-    }
-
-    /* Page 5 Responsive Reveal Text */
-    .page5 h1 {
-        font-size: clamp(3.5rem, 12vw, 7rem);
-    }
-
-    .page5 .content {
-        width: 85%;
-        left: 7.5%;
-        font-size: clamp(1.4rem, 5vw, 2.2rem);
-        gap: 2.5rem;
-    }
-}
-
-@media (max-width: 600px) {
-    .hero-title {
-        font-size: 3.5rem;
-    }
-
-    .hero-subtitle {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .hero-subtitle .sub-col.text-right {
-        text-align: left;
-    }
-
-    .about-headline {
-        font-size: 2.2rem;
-    }
-
-    .photo-composition {
-        height: 420px;
-    }
-
-    .card-1 {
-        width: 200px;
-    }
-
-    .card-2 {
-        width: 180px;
-    }
-
-    .service-title {
-        font-size: 1.3rem;
-    }
-
-    .service-num {
-        margin-right: 1.2rem;
-    }
-
-    .accordion-content p {
-        padding-left: 2rem;
-        font-size: 0.95rem;
-    }
-
-    .footer-container {
-        flex-direction: column;
-        gap: 2rem;
-        text-align: center;
-    }
-
-    /* Single biography photo dimensions on very small screens */
-    .single-photo-wrapper {
-        width: 260px;
-        height: 360px;
-        margin: 30px auto 0;
-    }
-
-    .photo-bg-svg {
-        top: -25px;
-        left: -25px;
-        width: calc(100% + 50px);
-        height: calc(100% + 50px);
-    }
-}
-
 
 /* ===================================================
    PRESERVED ORIGINAL PROJECTS SECTION STYLING (Line 15-260)
@@ -1581,144 +1321,6 @@ body {
     z-index: 2;
     /* sits above .content once revealed */
 
-}
-
-/* Hand */
-
-.hand {
-
-    position: absolute;
-
-    width: 90%;
-
-    bottom: -700px;
-    z-index: 3;
-
-}
-
-/* Text container that sits on the paper */
-
-.paper-content {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 75%;
-    max-width: 1000px;
-    z-index: 100;
-    /* Above the hand image */
-    color: #270000;
-}
-
-/*
-  Every .project is stacked in the exact same spot (top:0 / left:0)
-  so that only opacity/position animate — nothing pushes the layout
-  around while slides cross-fade in and out.
-*/
-.project {
-    position: absolute;
-    top: -20px;
-    left: 0;
-    width: 100%;
-    opacity: 0;
-
-    display: flex;
-    align-items: center;
-    gap: 48px;
-    text-align: left;
-}
-
-.project-media {
-    flex: 1 1 40%;
-}
-
-.project-media img {
-    display: block;
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 3px 50px 50px 50px rgba(0, 0, 0, 0.25);
-    border-color: #270000;
-    border-style: solid;
-    border-width: 3.5px;
-}
-
-.project-info {
-    flex: 2 2 40%;
-}
-
-/* Slides with no photo (e.g. the closing "let's work together" slide)
-   fall back to a single centered column. */
-.project-solo {
-    justify-content: center;
-    text-align: center;
-}
-
-#projectheading {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 2.3rem;
-    font-weight: 700;
-    line-height: .8;
-    color: #251e1f;
-    top: -50px;
-    left: 0;
-}
-
-#opentowork {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 5rem;
-    font-weight: 700;
-    line-height: .8;
-    color: #421e24;
-    top: 50px;
-    left: 150px;
-    ;
-}
-
-.project p {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.25rem;
-    font-style: italic;
-    font-weight: 400;
-    line-height: 1.8;
-    letter-spacing: .2px;
-    color: #262626;
-}
-
-#opentowork-description {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.5rem;
-    font-style: italic;
-    font-weight: 400;
-    line-height: 1.8;
-    letter-spacing: px;
-    margin-top: 130px;
-    color: #262626;
-}
-
-@media (max-width: 900px) {
-    .paper-content {
-        width: 85%;
-        top: 14%;
-    }
-
-    /* Stack photo above text on smaller screens instead of side-by-side */
-    .project {
-        flex-direction: column;
-        text-align: center;
-        gap: 16px;
-    }
-
-    .project-info {
-        text-align: center;
-    }
-
-    .project h1 {
-        font-size: 6px;
-    }
-
-    .project p {
-        font-size: 15px;
-    }
 }
 
 /* ===================================================
@@ -1850,7 +1452,6 @@ body {
     transform: translate3d(3px, -3px, 0);
 }
 
-
 /* ===================================================
    RESUME SECTION (3D Accordion Unfold)
    =================================================== */
@@ -1945,27 +1546,6 @@ body {
     pointer-events: none;
 }
 
-@media (max-width:500px) {
-    #resume p {
-        font-size: 4vw;
-        width: 80%;
-    }
-
-    .resume {
-        width: 80%;
-        height: 60vh;
-    }
-
-    .img {
-        height: 20vh;
-    }
-
-    .text h1 {
-        margin-top: 50vh;
-        font-size: 9vw;
-    }
-}
-
 button {
     align-self: flex-start;
     background-color: transparent;
@@ -2011,4 +1591,650 @@ button-hover-fill {
 button:hover .btn-hover-fill {
     width: 300px;
     height: 300px;
+}
+
+/* ===================================================
+   RESPONSIVE DESIGN ADDITIONS (AWWWARDS-LEVEL ADJUSTMENTS)
+   Grouped from largest to smallest viewports.
+   =================================================== */
+
+/* Laptop / Small Desktop (max-width: 1200px) */
+@media (max-width: 1200px) {
+    .nav-header {
+        padding: 1.5rem 5%;
+    }
+    
+    .hero-title {
+        font-size: clamp(4.5rem, 8vw, 6.5rem) !important;
+    }
+    
+    .about-headline {
+        font-size: clamp(2.2rem, 5vw, 3.2rem) !important;
+    }
+    
+    .about-grid {
+        gap: 3rem;
+    }
+    
+    .single-photo-wrapper {
+        width: 35vw;
+        height: auto;
+        aspect-ratio: 1 / 1.4;
+    }
+}
+
+/* Tablet / iPad (max-width: 992px) */
+@media (max-width: 992px) {
+    /* Global Layout & Padding Adjustments */
+    section {
+        padding: 6rem 0 !important;
+    }
+    
+    .about-section, .skills-section, .services-section, .timeline-section, .contact-section {
+        padding: 6rem 0 !important;
+    }
+
+    /* Floating Navigation Header */
+    .nav-header {
+        padding: 1.2rem 5% !important;
+    }
+
+    .nav-logo a {
+        font-size: 1.8rem !important;
+    }
+
+    /* Glassmorphism scrolled background */
+    .nav-header.scrolled {
+        padding: 1rem 5% !important;
+        background-color: rgba(28, 1, 12, 0.85) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    /* Mobile Overlay Menu */
+    .mobile-menu-overlay {
+        background-color: rgba(16, 1, 8, 0.98) !important;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        overflow-y: auto;
+    }
+
+    .mobile-nav-link {
+        font-size: clamp(2rem, 6vw, 3rem) !important;
+    }
+
+    /* Hero Section */
+    .home-hero {
+        padding-top: 80px;
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-title {
+        font-size: clamp(3.2rem, 9vw, 5.2rem) !important;
+        margin-bottom: 2.5rem;
+    }
+
+    .hero-subtitle {
+        max-width: 100% !important;
+        gap: 2rem !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    
+    .scroll-indicator {
+        bottom: -40px;
+    }
+
+    /* About Section */
+    .about-grid {
+        grid-template-columns: 1fr !important;
+        gap: 3.5rem !important;
+    }
+
+    .about-headline {
+        font-size: clamp(2rem, 6vw, 2.8rem) !important;
+        margin-bottom: 2rem;
+    }
+
+    .about-bio-text {
+        font-size: 1.05rem !important;
+        margin-bottom: 3rem;
+    }
+
+    .photo-composition {
+        height: auto !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .single-photo-wrapper {
+        width: 55vw;
+        height: auto;
+        aspect-ratio: 1 / 1.35;
+        margin: 0 auto;
+    }
+
+    .photo-bg-svg {
+        top: -20px;
+        left: -20px;
+        width: calc(100% + 40px);
+        height: calc(100% + 40px);
+    }
+
+    /* Skills Section */
+    .skills-headline {
+        font-size: clamp(2rem, 5vw, 2.8rem) !important;
+        margin-bottom: 4rem !important;
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 2rem !important;
+        margin-bottom: 4rem !important;
+    }
+
+    .skill-category-card {
+        padding: 2.5rem 2rem !important;
+    }
+
+    .skill-category-card h3 {
+        font-size: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    /* Services Section */
+    .services-headline {
+        font-size: clamp(2rem, 5vw, 2.8rem) !important;
+        margin-bottom: 4rem !important;
+    }
+
+    .accordion-item {
+        padding: 1.8rem 0 !important;
+    }
+
+    .service-title {
+        font-size: 1.6rem !important;
+    }
+
+    .accordion-content p {
+        padding-left: 3rem !important;
+        font-size: 1rem !important;
+    }
+
+    /* Timeline Section */
+
+    .timeline-headline {
+        font-size: clamp(2rem, 5vw, 2.8rem) !important;
+        margin-bottom: 4rem !important;
+    }
+
+    .timeline-wrapper {
+        padding: 1.5rem 0 !important;
+    }
+
+    .timeline-line-container {
+        left: 15px !important; /* Perfect center alignment with progress bar and dots */
+    }
+
+    .timeline-item {
+        width: 100% !important;
+        text-align: left !important;
+        padding: 1.5rem 0 1.5rem 35px !important;
+        margin-bottom: 2.5rem !important;
+    }
+    .timeline-item.right{
+        left: 0;
+    }
+
+    .timeline-dot {
+        left: 7px !important; /* 7px + 8px center = 15px */
+        top: 2rem !important;
+    }
+
+    .timeline-date {
+        margin-bottom: 0.5rem !important;
+    }
+
+    .timeline-content-box {
+        padding: 1.8rem !important;
+    }
+
+    .timeline-title {
+        font-size: 1.4rem !important;
+    }
+
+    /* Creation Pinning Section */
+    .page5 {
+        height: 100vh !important; /* Keep 100vh to maintain ScrollTrigger pinning */
+    }
+
+    .page5 h1 {
+        font-size: 10rem;
+        left: 5% !important;
+        width: auto !important;
+        transform: none !important;
+        text-align: left !important;
+    }
+
+    #top {
+        height: 50vh !important;
+    }
+
+    #bottom {
+        height: 50vh !important;
+        margin-top: -50vh !important;
+        z-index: 2 !important;
+    }
+
+    #middle {
+        height: 100vh !important;
+        margin-top: -50vh !important;
+        z-index: 1 !important;
+    }
+
+    #topH {
+        bottom: -20% !important;
+    }
+
+    #bottomH {
+        top: -90px !important;
+    }
+
+    .page5 .content {
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 80% !important;
+        max-width: 550px; /* Fixed user's 6px overflow/wrapping bug */
+        gap: 1.5rem !important;
+    }
+
+    .content-heading {
+        font-size: clamp(1.4rem, 4vw, 2.2rem) !important;
+        line-height: 1.4 !important;
+    }
+
+    .creative-btn {
+        padding: 1rem 2.2rem !important;
+    }
+
+    /* Resume Section 3D Accordion Unfolding - responsive aspect ratios */
+    #resume {
+        padding: 8rem 0 !important;
+        min-height: 100vh !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .resume {
+        width: 80% !important;
+        height: 131.28vw !important; /* 3 * 43.76vw = 131.28vw (fixed height to prevent layout shift) */
+        position: relative !important;
+        margin: 0 auto !important;
+    }
+
+    .img {
+        position: absolute !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 43.76vw !important;
+        margin-top: 0 !important;
+        transform-origin: top;
+    }
+
+    #imgOne {
+        top: 0 !important;
+        z-index: 3;
+    }
+
+    #imgTwo {
+        top: 43.76vw !important; /* hinge starts at bottom of imgOne */
+        transform: perspective(1000px) rotateX(-90deg);
+        z-index: 2;
+    }
+
+    #imgThree {
+        top: 87.52vw !important; /* hinge starts at bottom of imgOne when imgTwo is folded */
+        transform: perspective(1000px) rotateX(-90deg);
+        z-index: 1;
+    }
+
+    #resume .text {
+        position: absolute;
+        top: 80%;
+        left: 50%;
+        transform: translate(-50%, -50%) !important;
+        height: auto;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    #resume .text h1 {
+        font-size: 7vw !important;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    #resume button {
+        align-self: center;
+        left: 0 !important;
+        margin-top: 3.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    /* Contact Section */
+    .contact-grid {
+        grid-template-columns: 1fr !important;
+        gap: 4rem !important;
+    }
+
+    .contact-headline {
+        font-size: clamp(2.5rem, 7vw, 4rem) !important;
+        margin-bottom: 2.5rem !important;
+    }
+
+    .link-item a {
+        font-size: 1.5rem !important;
+    }
+
+    .contact-form {
+        gap: 2rem !important;
+    }
+}
+
+/* Large Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+    section {
+        padding: 5rem 0 !important;
+    }
+
+    .about-section, .skills-section, .services-section, .timeline-section, .contact-section {
+        padding: 5rem 0 !important;
+    }
+
+    /* Hero Section Subtitle Stacking */
+    .hero-subtitle {
+        grid-template-columns: 1fr !important;
+        gap: 1.2rem !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 1.5rem;
+    }
+    
+    .hero-subtitle .sub-col.text-right {
+        text-align: left !important;
+    }
+
+    .single-photo-wrapper {
+        width: 70vw;
+        height: auto;
+        aspect-ratio: 1 / 1.35;
+    }
+
+    /* Skills Grid to single column */
+    .skills-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.8rem !important;
+    }
+
+    .skill-category-card {
+        padding: 2.2rem 1.8rem !important;
+    }
+
+    /* Services accordion header fonts */
+    .service-title {
+        font-size: 1.4rem !important;
+    }
+
+    .accordion-content p {
+        padding-left: 2rem !important;
+    }
+
+    .page5 h1 {
+        font-size: 10rem;
+        left: 0 !important;
+        width: auto !important;
+        transform: none !important;
+        text-align: left !important;
+    }
+
+
+    /* Resume Section aspect ratios */
+    .resume {
+        width: 85% !important;
+        height: 139.5vw !important; /* 3 * 46.5vw = 139.5vw */
+    }
+
+    .img {
+        height: 46.5vw !important;
+    }
+
+    #imgOne {
+        top: 0 !important;
+    }
+
+    #imgTwo {
+        top: 46.5vw !important;
+        height: 46.5vw !important;
+    }
+
+    #imgThree {
+        top: 92.9vw !important;
+        height: 46.5vw !important;
+    }
+
+    #resume .text h1 {
+        font-size: 8vw !important;
+    }
+
+    #resume button {
+        margin-top: 2.5rem !important;
+    }
+}
+
+/* Small Mobile (max-width: 576px) */
+@media (max-width: 576px) {
+    .nav-header {
+        padding: 1rem 5% !important;
+    }
+
+    /* Loader bar container responsiveness */
+    .loader-bar-container {
+        width: 80% !important;
+        max-width: 300px;
+    }
+
+    /* Hero title layout */
+    .hero-title {
+        font-size: clamp(2.4rem, 11vw, 3.8rem) !important;
+        margin-bottom: 2rem;
+    }
+
+    .hero-story-tag {
+        font-size: 0.8rem !important;
+        letter-spacing: 4px !important;
+        margin-bottom: 1.5rem;
+    }
+
+    /* About Section biography card */
+    .about-headline {
+        font-size: clamp(1.6rem, 7vw, 2.2rem) !important;
+    }
+
+    .about-values {
+        grid-template-columns: 1fr !important;
+        gap: 2rem;
+    }
+
+    .single-photo-wrapper {
+        width: 80vw;
+        height: auto;
+        aspect-ratio: 1 / 1.35;
+    }
+
+    /* Accordion items */
+    .accordion-item {
+        padding: 1.4rem 0 !important;
+    }
+
+    .service-num {
+        margin-right: 1rem !important;
+    }
+
+    .service-title {
+        font-size: 1.15rem !important;
+    }
+
+    .plus-icon {
+        font-size: 1.5rem !important;
+    }
+
+    .accordion-content p {
+        padding-left: 1.5rem !important;
+        font-size: 0.9rem !important;
+        line-height: 1.6 !important;
+    }
+
+    /* Creation split page5 typography */
+    .page5 h1 {
+        font-size: 7rem !important;
+    }
+
+        .page5 h1 {
+        left: 2% !important;
+        width: auto !important;
+        transform: none !important;
+        text-align: left !important;
+    }
+    #top {
+        height: 50vh !important;
+    }
+    #bottom {
+        height: 50vh !important;
+        margin-top: -50vh !important;
+        z-index: 2 !important;
+    }
+    #middle {
+        height: 100vh !important;
+        margin-top: -50vh !important;
+        z-index: 1 !important;
+    }
+    #topH {
+        bottom: -15% !important;
+    }
+    #bottomH {
+        top: -17% !important;
+    }
+
+    /* Resume Section */
+    .resume {
+        width: 90% !important;
+        height: 147.69vw !important; /* 3 * 49.23vw = 147.69vw */
+    }
+
+    .img {
+        height: 49.23vw !important;
+    }
+
+    #imgOne {
+        top: 0 !important;
+    }
+
+    #imgTwo {
+        top: 49.23vw !important;
+        height: 49.23vw !important;
+    }
+
+    #imgThree {
+        top: 98.46vw !important;
+        height: 49.23vw !important;
+    }
+
+    #resume .text h1 {
+        font-size: 9vw !important;
+    }
+
+    #resume button {
+        margin-top: 2rem !important;
+        padding: 1rem 2.2rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* Contact forms input size */
+    .contact-headline {
+        font-size: clamp(2rem, 9vw, 3rem) !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        font-size: 1.05rem !important;
+    }
+
+    .submit-btn {
+        width: 100%;
+        text-align: center;
+        padding: 1rem 2rem !important;
+    }
+
+    /* Footer styling */
+    .footer-container {
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+        text-align: center !important;
+    }
+
+    .footer-back-to-top {
+        margin-top: 0.5rem;
+    }
+}
+
+/* Small Phones (max-width: 400px) */
+@media (max-width: 400px) {
+    .hero-title {
+        font-size: clamp(2rem, 11vw, 3rem) !important;
+    }
+
+    .about-headline {
+        font-size: 1.5rem !important;
+    }
+
+    .page5 h1 {
+        font-size: 5rem !important;
+    }
+    #top {
+        height: 50vh !important;
+    }
+    #bottom {
+        height: 50vh !important;
+        margin-top: -50vh !important;}
+
+    #middle {
+        height: 100vh !important;
+        margin-top: -50vh !important;
+        z-index: 1 !important;
+    }
+    #topH {
+        bottom: -10% !important;
+    }
+    #bottomH {
+        top: -13% !important;
+    }
+    #resume .text h1 {
+        font-size: 10vw !important;
+    }
+        #resume .text {
+        position: absolute;
+        top: 95%;
+        left: 50%;
+        transform: translate(-50%, -100%) !important;
+        width: 100%;
+        pointer-events: none;
+    }
+
+
+
 }

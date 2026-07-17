@@ -1,5 +1,9 @@
 gsap.registerPlugin(ScrollTrigger);
 
+// Ignore mobile resize address-bar toggles for smoother ScrollTrigger pinning
+ScrollTrigger.config({ ignoreMobileResize: true });
+
+
 /* ===================================================
    LENIS SMOOTH SCROLL INTEGRATION
    =================================================== */
@@ -142,7 +146,11 @@ function revealHero() {
     const scrollInd = document.querySelector('.scroll-indicator');
     const heroPortrait = document.querySelector('.hero-bg-media');
 
-    const heroTl = gsap.timeline();
+    const heroTl = gsap.timeline({
+        onComplete: () => {
+            ScrollTrigger.refresh();
+        }
+    });
 
     heroTl.to(heroPortrait, {
         opacity: 1,
@@ -198,20 +206,42 @@ gsap.to('.hero-portrait', {
    ABOUT ME SECTION EFFECTS
    =================================================== */
 // Scroll headline line-mask fade using SplitType
-const aboutHeadline = new SplitType('.about-headline', { types: 'lines, words' });
-if (aboutHeadline.words) {
-    gsap.from(aboutHeadline.words, {
-        opacity: 0.15,
-        stagger: 0.02,
-        duration: 1.2,
-        scrollTrigger: {
-            trigger: '.about-headline',
-            start: 'top 85%',
-            end: 'bottom 60%',
-            scrub: true
-        }
-    });
+// Scroll headline line-mask fade using SplitType with responsive resize handling
+let aboutHeadlineInstance = new SplitType('.about-headline', { types: 'lines, words' });
+let aboutHeadlineTrigger;
+
+function createAboutHeadlineAnimation() {
+    if (aboutHeadlineInstance.words) {
+        aboutHeadlineTrigger = gsap.from(aboutHeadlineInstance.words, {
+            opacity: 0.15,
+            stagger: 0.02,
+            duration: 1.2,
+            scrollTrigger: {
+                trigger: '.about-headline',
+                start: 'top 85%',
+                end: 'bottom 60%',
+                scrub: true
+            }
+        });
+    }
 }
+createAboutHeadlineAnimation();
+
+// Debounced split type update on viewport resize
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if (aboutHeadlineTrigger) {
+            aboutHeadlineTrigger.scrollTrigger.kill();
+            aboutHeadlineTrigger.kill();
+        }
+        aboutHeadlineInstance.revert();
+        aboutHeadlineInstance = new SplitType('.about-headline', { types: 'lines, words' });
+        createAboutHeadlineAnimation();
+        ScrollTrigger.refresh();
+    }, 250);
+});
 
 // Fade in about details
 gsap.from('.about-bio-text p, .about-values .value-item', {
@@ -457,12 +487,17 @@ if (menuToggle && mobileOverlay) {
     });
 
     mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            menuOpen = false;
-            gsap.to(menuToggle.querySelectorAll('.line')[0], { rotate: 0, y: 0, duration: 0.3 });
-            gsap.to(menuToggle.querySelectorAll('.line')[1], { rotate: 0, y: 0, duration: 0.3 });
-            gsap.to(mobileOverlay, { autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' });
-            lenis.start();
+        link.addEventListener('click', (e) => {
+            const target = link.getAttribute('href');
+            if (target.startsWith('#')) {
+                e.preventDefault();
+                menuOpen = false;
+                gsap.to(menuToggle.querySelectorAll('.line')[0], { rotate: 0, y: 0, duration: 0.3 });
+                gsap.to(menuToggle.querySelectorAll('.line')[1], { rotate: 0, y: 0, duration: 0.3 });
+                gsap.to(mobileOverlay, { autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' });
+                lenis.start();
+                lenis.scrollTo(target);
+            }
         });
     });
 }
@@ -488,6 +523,20 @@ headerNavLinks.forEach(link => {
 });
 
 /* ===================================================
+   NAVBAR HEADER SCROLL BACKGROUND
+   =================================================== */
+const headerEl = document.querySelector('.nav-header');
+if (headerEl) {
+    lenis.on('scroll', (e) => {
+        if (e.scroll > 50) {
+            headerEl.classList.add('scrolled');
+        } else {
+            headerEl.classList.remove('scrolled');
+        }
+    });
+}
+
+/* ===================================================
    PAGE 5 - CREATION SPLIT PANEL REVEAL (LANDING PAGE)
    =================================================== */
 
@@ -496,65 +545,197 @@ gsap.set(".page5 .content", { autoAlpha: 0, scale: 0.9, yPercent: 10 });
 gsap.set("#topH", { yPercent: 50 });
 gsap.set("#bottomH", { yPercent: -50 });
 
-const page5Tl = gsap.timeline({
-    scrollTrigger: {
-        trigger: ".page5",
-        start: "top top",
-        end: "+=1200", // snappy pinning distance
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1
-    }
+let mmPage5 = gsap.matchMedia();
+
+// Desktop and Laptop
+mmPage5.add("(min-width: 993px)", () => {
+    const page5Tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: ".page5",
+            start: "top top",
+            end: "+=1200", // snappy pinning distance
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1
+        }
+    });
+
+    page5Tl.to("#top", { yPercent: -100, ease: "none", duration: 1 }, 0)
+        .to("#bottom", { yPercent: 100, ease: "none", duration: 1 }, 0)
+        .to("#topH", { yPercent: 100, ease: "none", duration: 1 }, 0)
+        .to("#bottomH", { yPercent: -100, ease: "none", duration: 1 }, 0)
+        .to(".page5 .content", { autoAlpha: 1, scale: 1, yPercent: 0, ease: "power2.out", duration: 1 }, 0.2)
+        .to({}, { duration: 0.5 });
 });
 
-page5Tl.to("#top", { yPercent: -100, ease: "none", duration: 1 }, 0)
-    .to("#bottom", { yPercent: 100, ease: "none", duration: 1 }, 0)
-    .to("#topH", { yPercent: 100, ease: "none", duration: 1 }, 0)
-    .to("#bottomH", { yPercent: -100, ease: "none", duration: 1 }, 0)
-    .to(".page5 .content", { autoAlpha: 1, scale: 1, yPercent: 0, ease: "power2.out", duration: 1 }, 0.2)
-    // Hold the content visible before scroll unpins
-    .to({}, { duration: 0.5 });
+// Tablet and Mobile
+mmPage5.add("(max-width: 992px)", () => {
+    const page5Tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: ".page5",
+            start: "top top",
+            end: "+=600", // shorter pinning distance for mobile screens
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1
+        }
+    });
+
+    page5Tl.to("#top", { yPercent: -100, ease: "none", duration: 1 }, 0)
+        .to("#bottom", { yPercent: 100, ease: "none", duration: 1 }, 0)
+        .to("#topH", { yPercent: 100, ease: "none", duration: 1 }, 0)
+        .to("#bottomH", { yPercent: -100, ease: "none", duration: 1 }, 0)
+        .to(".page5 .content", { autoAlpha: 1, scale: 1, yPercent: 0, ease: "power2.out", duration: 1 }, 0.2)
+        .to({}, { duration: 0.3 });
+});
 
 
 /* ===================================================
-   RESUME SECTION - GSAP TIMELINE
+   RESUME SECTION - GSAP TIMELINE (RESPONSIVE)
    =================================================== */
 
 // Initial state for centered text overlay
 gsap.set(".text", { opacity: 0, y: 100 });
 
-var tl = gsap.timeline({
-    scrollTrigger: {
-        trigger: "#resume",
-        start: "50% 90%",
-        end: "70% 10%",
-        scrub: true,
-        markers: true,
-    }
-})
+let mm = gsap.matchMedia();
 
-tl.to("#imgTwo", {
-    rotateX: "0deg",
-    marginTop: "18.3%",
+// Desktop and Laptop
+mm.add("(min-width: 993px)", () => {
+    var tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: "#resume",
+            start: "50% 90%",
+            end: "70% 10%",
+            scrub: true,
+        }
+    });
 
-})
-    .to("#imgThree", {
+    tl.to("#imgTwo", {
         rotateX: "0deg",
         marginTop: "18.3%",
+    })
+        .to("#imgThree", {
+            rotateX: "0deg",
+            marginTop: "18.3%",
+        }, 'sa')
+        .to(".resume", {
+            scale: "0.5",
+            minHeight: "90vh",
+            y: "25%",
+        }, 'sa')
+        .to(".img", {
+            filter: "grayscale(1)",
+        }, 'saa')
+        .to(".text", {
+            opacity: 1,
+            y: "25%",
+        }, 'saa')
+        .to(".overlay", {
+            opacity: 1,
+        }, 'saa');
+});
 
-    },'sa')
-    .to(".resume", {
-        scale: "0.5",
-        minHeight: "90vh",
-        y: "25%",
-    }, 'sa')
-    .to(".img", {
-        filter: "grayscale(1)",
-    }, 'saa')
-    .to(".text", {
-        opacity: 1,
-        y: "25%",
-    }, 'saa')
-    .to(".overlay", {
-        opacity: 1,
-    }, 'saa')
+// Tablet (max-width: 992px) and (min-width: 769px)
+mm.add("(max-width: 992px) and (min-width: 769px)", () => {
+    var tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: "#resume",
+            start: "top 80%",
+            end: "bottom 20%",
+            scrub: true,
+        }
+    });
+
+    tl.to("#imgTwo", {
+        rotateX: "0deg",
+        top: "43.76vw",
+    })
+        .to("#imgThree", {
+            rotateX: "0deg",
+            top: "87.52vw",
+        }, 'sa')
+        .to(".resume", {
+            scale: "0.85",
+            y: "5%",
+        }, 'sa')
+        .to(".img", {
+            filter: "grayscale(1)",
+        }, 'saa')
+        .to(".text", {
+            opacity: 1,
+            y: "5%",
+        }, 'saa')
+        .to(".overlay", {
+            opacity: 1,
+        }, 'saa');
+});
+
+// Large Mobile (max-width: 768px) and (min-width: 577px)
+mm.add("(max-width: 768px) and (min-width: 577px)", () => {
+    var tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: "#resume",
+            start: "top 80%",
+            end: "bottom 20%",
+            scrub: true,
+        }
+    });
+
+    tl.to("#imgTwo", {
+        rotateX: "0deg",
+        top: "46.5vw",
+    })
+        .to("#imgThree", {
+            rotateX: "0deg",
+            top: "93vw",
+        }, 'sa')
+        .to(".resume", {
+            scale: "0.85",
+            y: "5%",
+        }, 'sa')
+        .to(".img", {
+            filter: "grayscale(1)",
+        }, 'saa')
+        .to(".text", {
+            opacity: 1,
+            y: "5%",
+        }, 'saa')
+        .to(".overlay", {
+            opacity: 1,
+        }, 'saa');
+});
+
+// Small Mobile (max-width: 576px)
+mm.add("(max-width: 576px)", () => {
+    var tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: "#resume",
+            start: "top 85%",
+            end: "bottom 15%",
+            scrub: true,
+        }
+    });
+
+    tl.to("#imgTwo", {
+        rotateX: "0deg",
+        top: "49.23vw",
+    })
+        .to("#imgThree", {
+            rotateX: "0deg",
+            top: "98.46vw",
+        }, 'sa')
+        .to(".resume", {
+            scale: "0.85",
+            y: "5%",
+        }, 'sa')
+        .to(".img", {
+            filter: "grayscale(1)",
+        }, 'saa')
+        .to(".text", {
+            opacity: 1,
+            y: "5%",
+        }, 'saa')
+        .to(".overlay", {
+            opacity: 1,
+        }, 'saa');
+});
