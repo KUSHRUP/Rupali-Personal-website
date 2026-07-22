@@ -256,17 +256,7 @@ gsap.from('.about-bio-text p, .about-values .value-item', {
     }
 });
 
-// Biography photo scrolling parallax
-gsap.to('.single-photo-wrapper', {
-    y: -40,
-    ease: 'none',
-    scrollTrigger: {
-        trigger: '.about-section',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true
-    }
-});
+
 
 /* .card-2 is commented out in HTML
 gsap.to('.card-2', {
@@ -573,7 +563,7 @@ mmPage5.add("(max-width: 992px)", () => {
     const page5Tl = gsap.timeline({
         scrollTrigger: {
             trigger: ".page5",
-            start: "top top",
+            start: "50% 35%",
             end: "+=600", // shorter pinning distance for mobile screens
             scrub: 1,
             pin: true,
@@ -710,8 +700,8 @@ mm.add("(max-width: 576px)", () => {
     var tl = gsap.timeline({
         scrollTrigger: {
             trigger: "#resume",
-            start: "top 85%",
-            end: "bottom 15%",
+            start: "top 35%",
+            end: "bottom 35%",
             scrub: true,
         }
     });
@@ -725,15 +715,15 @@ mm.add("(max-width: 576px)", () => {
             top: "98.46vw",
         }, 'sa')
         .to(".resume", {
-            scale: "0.85",
-            y: "5%",
+            scale: "0.75",
+            y: "15%",
         }, 'sa')
         .to(".img", {
             filter: "grayscale(1)",
         }, 'saa')
         .to(".text", {
             opacity: 1,
-            y: "5%",
+            y: "%",
         }, 'saa')
         .to(".overlay", {
             opacity: 1,

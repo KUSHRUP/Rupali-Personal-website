@@ -550,7 +550,9 @@ body {
 
 .about-grid {
     display: grid;
-    grid-template-columns: 55% 45%;
+    grid-template-columns: 1fr;
+    max-width: 900px;
+    margin: 0 auto;
     gap: 5rem;
     align-items: center;
 }
@@ -2193,7 +2195,7 @@ button:hover .btn-hover-fill {
 }
 
 /* Small Phones (max-width: 400px) */
-@media (max-width: 400px) {
+@media (max-width: 450px) {
     .hero-title {
         font-size: clamp(2rem, 11vw, 3rem) !important;
     }
@@ -2220,13 +2222,64 @@ button:hover .btn-hover-fill {
         z-index: 1 !important;
     }
     #topH {
-        bottom: -8.9% !important;
-        font-size: 4rem !important;
+        bottom: -9.7% !important;
+        font-size: 5.0rem !important;
 
     }
     #bottomH {
-        top: -9.9% !important;
-        font-size: 4rem !important;
+        top: -9% !important;
+        font-size: 5.0rem !important;
+  
+    }
+    #resume .text h1 {
+        font-size: 10vw !important;
+    }
+        #resume .text {
+        position: absolute;
+        top: 95%;
+        left: 50%;
+        transform: translate(-50%, -100%) !important;
+        width: 100%;
+        pointer-events: none;
+    }
+
+
+
+}
+@media (max-width: 400px) {
+    .hero-title {
+        font-size: clamp(2rem, 11vw, 3rem) !important;
+    }
+
+    .about-headline {
+        font-size: 1.5rem !important;
+    }
+
+    .page5 h1 {
+        font-size: 3rem !important;
+    }
+    #top {
+        height: 50vh !important;
+        width:auto !important;
+    }
+    #bottom {
+        height: 50vh !important;
+        width: auto !important;
+        }
+
+    #middle {
+        height: 100vh !important;
+        margin-top: -50vh !important;
+        z-index: 1 !important;
+    }
+    #topH {
+        bottom: -11% !important;
+        font-size: 5rem !important;
+
+    }
+    #bottomH {
+        top: -11% !important;
+        font-size: 5rem !important;
   
     }
     #resume .text h1 {
@@ -2248,4 +2301,4 @@ button:hover .btn-hover-fill {
 
 /* ===================================================
    CSS FINALIZED
-   =================================================== */
+   ===================================================*/
